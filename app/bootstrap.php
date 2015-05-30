@@ -2,20 +2,28 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$configurator = new Nette\Configurator;
+if (file_exists(__DIR__ . '/config/environment.php')) {
+	require __DIR__ . '/config/environment.php';
+}
 
-//$configurator->setDebugMode('23.75.345.200'); // enable for your remote IP
-$configurator->enableDebugger(__DIR__ . '/../log');
+return call_user_func(function() {
+	$configurator = new Nette\Configurator;
 
-$configurator->setTempDirectory(__DIR__ . '/../temp');
+	//$configurator->setDebugMode('23.75.345.200'); // enable for your remote IP
+	$configurator->enableDebugger(__DIR__ . '/../log');
 
-$configurator->createRobotLoader()
-	->addDirectory(__DIR__)
-	->register();
+	$configurator->setTempDirectory(__DIR__ . '/../temp');
 
-$configurator->addConfig(__DIR__ . '/config/config.neon');
-$configurator->addConfig(__DIR__ . '/config/config.local.neon');
+	$configurator->createRobotLoader()
+		->addDirectory(__DIR__)
+		->addDirectory(__DIR__ . '/../libs')
+		->register();
 
-$container = $configurator->createContainer();
+	$configurator->addConfig(__DIR__ . '/config/config.neon');
+	$configurator->addConfig(__DIR__ . '/config/config.local.neon');
 
-return $container;
+	$container = $configurator->createContainer();
+	$container->getByType(\WebServer\ContainerFactory::class)->setConfigurator($configurator);
+
+	return $container;
+});

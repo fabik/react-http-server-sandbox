@@ -1,6 +1,10 @@
 # WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
 # http://nette.org/security-warning
 
+extensions:
+	console: Kdyby\Console\DI\ConsoleExtension
+
+
 parameters:
 
 
@@ -20,3 +24,16 @@ session:
 
 services:
 	router: App\RouterFactory::createRouter
+
+	- WebServer\ContainerFactory
+	http.requestFactory: WebServer\HttpRequestFactory
+	console.router:
+		class: WebServer\CliRouter
+		autowired: false
+
+
+
+console:
+	url: http://react-http-server-sandbox.l
+	commands:
+		- WebServer\RunCommand

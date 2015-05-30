@@ -19,7 +19,9 @@
 		"nette/security": "~2.3.0",
 		"nette/utils": "~2.3.0",
 		"latte/latte": "~2.3.0",
-		"tracy/tracy": "~2.3.0"
+		"tracy/tracy": "~2.3.0",
+		"kdyby/console": "^2.3",
+		"react/http": "^0.4.1"
 	},
 	"require-dev": {
 		"nette/tester": "~1.4"
